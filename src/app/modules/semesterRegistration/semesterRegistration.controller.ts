@@ -1,11 +1,23 @@
 import { Request, Response } from 'express';
-import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
 import { semesterRegistrationServices } from './semesterRegistration.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 const createSemesterRegistration = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const result =
+      await semesterRegistrationServices.createSemesterRegistrationIntoDB(
+        req.body,
+      );
+
+    sendResponse(res, {
+      data: result,
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Created semester registration successfully',
+    });
+  },
 );
 
 const getAllSemesterRegistrations = catchAsync(
