@@ -5,6 +5,7 @@ import AppError from '../../errors/AppError';
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { TSemesterRegistration } from './semesterRegistration.interface';
 import { SemesterRegistration } from './semesterRegistration.model';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
@@ -36,7 +37,20 @@ const createSemesterRegistrationIntoDB = async (
 
 const getAllSemesterRegistrationsFromDB = async (
   query: Record<string, unknown>,
-) => {};
+) => {
+  const semesterRegistrationQuery = new QueryBuilder(
+    SemesterRegistration.find().populate('academicSemester'),
+    query,
+  )
+    .filter()
+    .paginate()
+    .sort()
+    .fields();
+
+  const result = semesterRegistrationQuery.modelQuery;
+
+  return result;
+};
 
 const getSingleSemesterRegistrationsFromDB = async (id: string) => {};
 
