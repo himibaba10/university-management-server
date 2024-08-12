@@ -1,17 +1,19 @@
-import mongoose, { Schema } from 'mongoose';
-import { SemesterRegistrationStatus } from './semesterRegistration.constant';
+import { model, Schema } from 'mongoose';
 import { TSemesterRegistration } from './semesterRegistration.interface';
+import { AcademicSemester } from '../academicSemester/academicSemester.model';
+import { SemesterRegistrationStatus } from './semesterRegistration.constant';
 
-const semesterRegistrationSchema = new mongoose.Schema<TSemesterRegistration>(
+const semesterRegistrationSchema = new Schema<TSemesterRegistration>(
   {
     academicSemester: {
       type: Schema.Types.ObjectId,
       required: true,
       unique: true,
-      ref: 'AcademicSemester',
+      ref: AcademicSemester,
     },
     status: {
       type: String,
+      required: true,
       enum: SemesterRegistrationStatus,
       default: 'UPCOMING',
     },
@@ -25,10 +27,12 @@ const semesterRegistrationSchema = new mongoose.Schema<TSemesterRegistration>(
     },
     minCredit: {
       type: Number,
+      required: true,
       default: 3,
     },
     maxCredit: {
       type: Number,
+      required: true,
       default: 15,
     },
   },
@@ -37,7 +41,7 @@ const semesterRegistrationSchema = new mongoose.Schema<TSemesterRegistration>(
   },
 );
 
-export const SemesterRegistration = mongoose.model<TSemesterRegistration>(
+export const SemesterRegistration = model<TSemesterRegistration>(
   'SemesterRegistration',
   semesterRegistrationSchema,
 );
