@@ -89,10 +89,25 @@ const updateSemesterRegistrationIntoDB = async (
     );
   }
 
-  if (semesterRegistration?.status === 'ENDED') {
+  const status = semesterRegistration?.status;
+
+  if (status === RegistrationStatus.ENDED) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       'This semester registration is already ended',
+    );
+  }
+
+  //Only UPCOMING -> ONGOING -> ENDED steps can be done, otherwise throw error
+  if (
+    (status === RegistrationStatus.UPCOMING &&
+      payload.status === RegistrationStatus.ENDED) ||
+    (status === RegistrationStatus.ONGOING &&
+      payload.status === RegistrationStatus.UPCOMING)
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `You can not directly change from ${status} to ${payload.status}`,
     );
   }
 };
