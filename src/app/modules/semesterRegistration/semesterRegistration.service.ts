@@ -79,7 +79,16 @@ const getSingleSemesterRegistrationsFromDB = async (id: string) => {
 const updateSemesterRegistrationIntoDB = async (
   id: string,
   payload: Partial<TSemesterRegistration>,
-) => {};
+) => {
+  const semisterRegistration = await SemesterRegistration.findById(id);
+
+  if (semisterRegistration?.status === 'ENDED') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'This semester registration is already ended',
+    );
+  }
+};
 
 const deleteSemesterRegistrationFromDB = async (id: string) => {};
 
