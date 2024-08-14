@@ -69,14 +69,9 @@ const updateSemesterRegistration = catchAsync(
   },
 );
 
-// const deleteSemesterRegistration = catchAsync(
-//   async (req: Request, res: Response) => {},
-// );
-
 export const semesterRegistrationController = {
   createSemesterRegistration,
   getAllSemesterRegistrations,
   getSingleSemesterRegistration,
   updateSemesterRegistration,
-  // deleteSemesterRegistration,
 };

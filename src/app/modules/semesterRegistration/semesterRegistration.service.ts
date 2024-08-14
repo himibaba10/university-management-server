@@ -110,14 +110,18 @@ const updateSemesterRegistrationIntoDB = async (
       `You can not directly change from ${status} to ${payload.status}`,
     );
   }
-};
 
-const deleteSemesterRegistrationFromDB = async (id: string) => {};
+  const result = await SemesterRegistration.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
 
 export const semesterRegistrationServices = {
   createSemesterRegistrationIntoDB,
   getAllSemesterRegistrationsFromDB,
   getSingleSemesterRegistrationsFromDB,
   updateSemesterRegistrationIntoDB,
-  deleteSemesterRegistrationFromDB,
 };
