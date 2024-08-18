@@ -13,6 +13,7 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     academicDepartment,
     academicFaculty,
     course,
+    section,
     faculty,
     semesterRegistration,
   } = payload;
@@ -71,7 +72,8 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
 
   const alreadyHasSectionInTheSemester = await OfferedCourse.findOne({
     academicSemester: doesSemesterRegistrationExist.academicSemester,
-    section: payload.section,
+    course,
+    section,
   });
 
   if (alreadyHasSectionInTheSemester) {
