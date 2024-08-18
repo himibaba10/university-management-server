@@ -56,6 +56,19 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Course is not found.');
   }
 
+  const facultyOfAcademicDepartment =
+    doesAcademicDepartmentExist.academicFaculty;
+
+  if (
+    doesAcademicFacultyExist._id.toString() !==
+    facultyOfAcademicDepartment.toString()
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `The ${doesAcademicDepartmentExist.name} does not exist on the ${doesAcademicFacultyExist.name}`,
+    );
+  }
+
   payload.academicSemester = doesSemesterRegistrationExist.academicSemester;
 
   const result = await OfferedCourse.create(payload);
