@@ -69,6 +69,18 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     );
   }
 
+  const alreadyHasSectionInTheSemester = await OfferedCourse.findOne({
+    academicSemester: doesSemesterRegistrationExist.academicSemester,
+    section: payload.section,
+  });
+
+  if (alreadyHasSectionInTheSemester) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'Section already exists in the academic semester',
+    );
+  }
+
   payload.academicSemester = doesSemesterRegistrationExist.academicSemester;
 
   const result = await OfferedCourse.create(payload);
