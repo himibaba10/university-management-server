@@ -5,6 +5,8 @@ import { TOfferedCourse } from './offeredCourse.interface';
 import OfferedCourse from './offeredCourse.model';
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
+import { Faculty } from '../Faculty/faculty.model';
+import { Course } from '../Course/course.model';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -42,13 +44,13 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     );
   }
 
-  const doesFacultyExist = await SemesterRegistration.findById(faculty);
+  const doesFacultyExist = await Faculty.findById(faculty);
 
   if (!doesFacultyExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Faculty is not found.');
   }
 
-  const doesCourseExist = await SemesterRegistration.findById(course);
+  const doesCourseExist = await Course.findById(course);
 
   if (!doesCourseExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Course is not found.');

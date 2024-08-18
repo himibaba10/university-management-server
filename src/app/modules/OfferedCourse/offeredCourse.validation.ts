@@ -11,8 +11,24 @@ const createOfferedCourseValidationSchema = z.object({
     maxCapacity: z.number().int().positive(),
     section: z.number().int().positive(),
     days: z.array(z.enum([...Days] as [string, ...string[]])),
-    startTime: z.date(),
-    endTime: z.date(),
+    startTime: z.string().refine(
+      (val) => {
+        const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+        return regex.test(val);
+      },
+      {
+        message: 'Invalid time format. Please use HH:MM (24-hour) format.',
+      },
+    ),
+    endTime: z.string().refine(
+      (val) => {
+        const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+        return regex.test(val);
+      },
+      {
+        message: 'Invalid time format. Please use HH:MM (24-hour) format.',
+      },
+    ),
   }),
 });
 

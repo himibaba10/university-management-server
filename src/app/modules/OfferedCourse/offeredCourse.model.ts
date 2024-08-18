@@ -5,8 +5,8 @@ import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Course } from '../Course/course.model';
 import { Faculty } from '../Faculty/faculty.model';
-import { Days } from './offeredCourse.constant';
 import { TOfferedCourse } from './offeredCourse.interface';
+import { Days } from './offeredCourse.constant';
 
 const offeredCourseSchema = new Schema<TOfferedCourse>(
   {
@@ -55,11 +55,11 @@ const offeredCourseSchema = new Schema<TOfferedCourse>(
       },
     ],
     startTime: {
-      type: Date,
+      type: String,
       required: true,
     },
     endTime: {
-      type: Date,
+      type: String,
       required: true,
     },
   },

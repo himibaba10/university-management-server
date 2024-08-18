@@ -12,6 +12,6 @@ export type TOfferedCourse = {
   maxCapacity: number;
   section: number;
   days: TDays[];
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
 };
