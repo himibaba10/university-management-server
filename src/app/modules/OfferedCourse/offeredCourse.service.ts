@@ -7,6 +7,7 @@ import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Faculty } from '../Faculty/faculty.model';
 import { Course } from '../Course/course.model';
+import { hasTimeConflict } from './offeredCourse.utils';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -92,19 +93,14 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     days: { $in: days },
   }).select('days startTime endTime');
 
-  schedules.forEach((schedule) => {
-    const existingStartTime = new Date(`1970-01-01T${schedule.startTime}`);
-    const existingEndTime = new Date(`1970-01-01T${schedule.endTime}`);
-    const newStartTime = new Date(`1970-01-01T${startTime}`);
-    const newEndTime = new Date(`1970-01-01T${endTime}`);
+  const newSchedule = { startTime, endTime };
 
-    if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
-      throw new AppError(
-        httpStatus.CONFLICT,
-        'Time does not available! Choose another time',
-      );
-    }
-  });
+  if (hasTimeConflict(schedules, newSchedule)) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'Time does not available! Choose another time',
+    );
+  }
 
   payload.academicSemester = doesSemesterRegistrationExist.academicSemester;
 
