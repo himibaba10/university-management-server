@@ -8,6 +8,7 @@ import { AcademicDepartment } from '../academicDepartment/academicDepartment.mod
 import { Faculty } from '../Faculty/faculty.model';
 import { Course } from '../Course/course.model';
 import { hasTimeConflict } from './offeredCourse.utils';
+import { RegistrationStatus } from '../semesterRegistration/semesterRegistration.constant';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -108,6 +109,29 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   return result;
 };
 
+const updateOfferedCourseIntoDB = async (
+  id: string,
+  payload: Partial<TOfferedCourse>,
+) => {
+  const offeredCourse = await OfferedCourse.findById(id);
+
+  if (!offeredCourse) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Offered course is not found');
+  }
+
+  const semesterRegistration = await SemesterRegistration.findById(
+    offeredCourse?.semesterRegistration,
+  ).select('status');
+
+  if (semesterRegistration!.status !== RegistrationStatus.UPCOMING) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'Cannot update offered course in a semester registration that is not upcoming',
+    );
+  }
+};
+
 export const offeredCourseServices = {
   createOfferedCourseIntoDB,
+  updateOfferedCourseIntoDB,
 };
