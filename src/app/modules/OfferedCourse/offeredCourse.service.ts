@@ -114,6 +114,16 @@ const getOfferedCoursesFromDB = async () => {
   return result;
 };
 
+const getOfferedCourseFromDB = async (payload: string) => {
+  const result = await OfferedCourse.findById(payload);
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Offered course is not found');
+  }
+
+  return result;
+};
+
 const updateOfferedCourseIntoDB = async (
   id: string,
   payload: Pick<
@@ -171,5 +181,6 @@ const updateOfferedCourseIntoDB = async (
 export const offeredCourseServices = {
   createOfferedCourseIntoDB,
   getOfferedCoursesFromDB,
+  getOfferedCourseFromDB,
   updateOfferedCourseIntoDB,
 };

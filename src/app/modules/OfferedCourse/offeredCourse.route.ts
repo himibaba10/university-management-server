@@ -6,6 +6,7 @@ import validateRequest from '../../middlewares/validateRequest';
 const router = Router();
 
 router.get('/', offeredCourseControllers.getOfferedCourses);
+router.get('/:id', offeredCourseControllers.getOfferedCourse);
 
 router.post(
   '/create-offered-course',
