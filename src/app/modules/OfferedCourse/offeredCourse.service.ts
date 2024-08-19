@@ -109,6 +109,11 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   return result;
 };
 
+const getOfferedCoursesFromDB = async () => {
+  const result = await OfferedCourse.find();
+  return result;
+};
+
 const updateOfferedCourseIntoDB = async (
   id: string,
   payload: Pick<
@@ -165,5 +170,6 @@ const updateOfferedCourseIntoDB = async (
 
 export const offeredCourseServices = {
   createOfferedCourseIntoDB,
+  getOfferedCoursesFromDB,
   updateOfferedCourseIntoDB,
 };
